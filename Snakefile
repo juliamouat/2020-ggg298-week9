@@ -13,17 +13,13 @@ rule sourmash_compute:
     input: "1.fa.gz", "2.fa.gz", "3.fa.gz", "4.fa.gz", "5.fa.gz"
     output: "1.fa.gz.sig", "2.fa.gz.sig", "3.fa.gz.sig", "4.fa.gz.sig", "5.fa.gz.sig"
     conda: "envs/smash.yml"
-    shell: """sourmash compute -k 31 1.fa.gz
-             sourmash compute -k 31 2.fa.gz
-             sourmash compute -k 31 3.fa.gz
-             sourmash compute -k 31 4.fa.gz
-             sourmash compute -k 31 5.fa.gz"""
+    shell: "sourmash compute -k 31 {input}"
 
 rule sourmash_compare:
     input: "1.fa.gz.sig", "2.fa.gz.sig", "3.fa.gz.sig", "4.fa.gz.sig", "5.fa.gz.sig"
     output: "all.cmp"
     conda: "envs/smash.yml"
-    shell: "sourmash compare {input}.sig -o all.cmp"
+    shell: "sourmash compare {input} -o all.cmp"
 
 rule sourmash_plot:
     input: "all.cmp"
